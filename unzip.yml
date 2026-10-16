@@ -1,0 +1,24 @@
+name: Unzip archive
+on:
+  push:
+    paths:
+      - 'autoah.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unzip
+        run: unzip autoah.zip -d .
+      - name: Commit files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Auto-unzip archive" || echo "No changes"
+          git push
